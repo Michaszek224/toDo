@@ -1,0 +1,18 @@
+<h3>SIEMA KURWA</h3>
+<hr>
+
+{% for task in tasks %}
+
+
+{{task}}
+Edit
+
+<hr>
+
+{% endfor %}
+
+<form method="post">
+    {% csrf_token %}
+    <input value='' name="titleInput">
+    <input type="submit">
+</form>
