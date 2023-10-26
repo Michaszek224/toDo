@@ -1,14 +1,23 @@
-<h3>SIEMA KURWA</h3>
-<hr>
+<style>
+    .complete-task {
+      color: inherit;
+      text-decoration: none;
+      cursor: pointer;
+    }
+  </style>
 
 {% for task in tasks %}
+  {% if task.isDone %}
+  <del>
+    <a href="#" class="complete-task" data-task-id="{{ task.id }}">{{ task.title }}</a>
+  </del>
+  {% else %}
+    <a href="#" class="complete-task" data-task-id="{{ task.id }}">{{ task.title }}</a>
+  {% endif %}
+  
+  
 
-
-{{task}}
-Edit
-
-<hr>
-
+  <hr>
 {% endfor %}
 
 <form method="post">
@@ -16,3 +25,26 @@ Edit
     <input value='' name="titleInput">
     <input type="submit">
 </form>
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script>
+  $(document).ready(function() {
+    $(".complete-task").click(function(event) {
+      event.preventDefault();
+      var taskId = $(this).data("task-id");
+
+      $.ajax({
+        type: "POST",
+        url: "{% url 'complete_task' 0 %}".replace('0', taskId),
+        data: {csrfmiddlewaretoken: "{{ csrf_token }}"},
+        success: function() {
+          // Reload the page after completing the task
+          location.reload();
+        },
+        error: function(error) {
+          console.log(error);
+        }
+      });
+    });
+  });
+</script>
